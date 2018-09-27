@@ -1,2 +1,6 @@
 
-void echo(command,int);
+void runCommand(command);
+int checkFunction(char*);
+void echo(command);
+void cd(command);
+void external(command);
