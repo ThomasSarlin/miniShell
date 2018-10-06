@@ -2,4 +2,7 @@
 mish
 *.swp
 *.swo
+*.sw*
+*.swn
+ContentServer.pdf
 examplefile
