@@ -1,2 +1,2 @@
 #include "parser.h"
-void external(command);
+void external(command[]);

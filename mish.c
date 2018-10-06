@@ -22,14 +22,7 @@ int main(int argc,char **argv){
 	fflush(stderr);
 	while((getline(&userLine,&len,stdin))!=-1){
 		userargc=parse(userLine,comms);
-		for(int i=0;i<userargc;i++)
-			if(runCommand(comms[i])==0){
-				waitsize++;
-			}
-
-		for(int i=0;i<waitsize;i++){
-			pid=wait(&status);
-		}
+		runCommand(comms);
 		fprintf(stderr, "mish%% ");
 		fflush(stderr);
 	}
@@ -37,18 +30,18 @@ int main(int argc,char **argv){
 	return 0;
 }
 
-int runCommand(command com){
+int runCommand(command comms[]){
 	int result=-1;
-	switch(checkFunction(*com.argv)){
+	switch(checkFunction(*comms[0].argv)){
 		case 0:
-			echo(com);
+			echo(comms[0]);
 			break;
 		case 1:
-			cd(com);
+			cd(comms[0]);
 			break;
 		default:
 			result=0;
-			external(com);
+			external(comms);
 			break;
 	}
 	return result;
