@@ -6,7 +6,7 @@ TARGET = mish
 all:mish
 
 mish:parser.o mish.o echo.o cd.o external.o execute.o
-	$(CC) cd.o external.o mish.o parser.o echo.c $(FLAGS) -o $(TARGET)
+	$(CC) cd.o external.o mish.o parser.o echo.c execute.c $(FLAGS) -o $(TARGET)
 
 mish.o:mish.c mish.h 
 	$(CC) $(FLAGS) -c mish.c
