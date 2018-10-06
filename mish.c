@@ -7,18 +7,29 @@
 #include <stdlib.h>
 #include <stdbool.h>
 #include <string.h>
+#include <sys/types.h>
+#include <sys/wait.h>
 #include "linkedList.h"
 int main(int argc,char **argv){
 	command comms[MAXCOMMANDS];
 	int userargc;
 	char *userLine;
 	size_t len=0;
+	int waitsize=0;
+	int status;
+	pid_t pid;
 	fprintf(stderr, "mish%% ");
 	fflush(stderr);
 	while((getline(&userLine,&len,stdin))!=-1){
 		userargc=parse(userLine,comms);
 		for(int i=0;i<userargc;i++)
-			runCommand(comms[i]);
+			if(runCommand(comms[i])==0){
+				waitsize++;
+			}
+
+		for(int i=0;i<waitsize;i++){
+			pid=wait(&status);
+		}
 		fprintf(stderr, "mish%% ");
 		fflush(stderr);
 	}
@@ -26,8 +37,8 @@ int main(int argc,char **argv){
 	return 0;
 }
 
-void runCommand(command com){
-	
+int runCommand(command com){
+	int result=-1;
 	switch(checkFunction(*com.argv)){
 		case 0:
 			echo(com);
@@ -36,9 +47,11 @@ void runCommand(command com){
 			cd(com);
 			break;
 		default:
+			result=0;
 			external(com);
 			break;
 	}
+	return result;
 
 }
 int checkFunction(char *command){
