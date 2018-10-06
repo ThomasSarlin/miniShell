@@ -5,8 +5,8 @@ TARGET = mish
 
 all:mish
 
-mish:parser.o mish.o echo.o cd.o external.o
-	$(CC) cd.o external.o mish.o parser.o echo.c execute.h $(FLAGS) -o $(TARGET)
+mish:parser.o mish.o echo.o cd.o external.o execute.o
+	$(CC) cd.o external.o mish.o parser.o echo.c $(FLAGS) -o $(TARGET)
 
 mish.o:mish.c mish.h 
 	$(CC) $(FLAGS) -c mish.c
@@ -18,6 +18,8 @@ cd.o:cd.c cd.h
 	$(CC) -c $(FLAGS) cd.c
 external.o:external.c external.h
 	$(CC) -c $(FLAGS) external.c
+execute.o:execute.c execute.h
+	$(CC) -c $(FLAGS) execute.c
 clear:
 	rm *.o mish
 
