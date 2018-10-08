@@ -25,7 +25,7 @@ void userLoop(char* userLine, command comms[]){
 	sysprint();
 	while((getline(&userLine,&len,stdin))!=-1){
 		userargc=parse(userLine,comms);
-		runCommand(comms,userargc);
+		if(userargc!=0)runCommand(comms,userargc);
 		sysprint();
 	}
 }
