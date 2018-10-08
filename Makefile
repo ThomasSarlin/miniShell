@@ -14,7 +14,7 @@ parser.o:parser.c parser.h
 	$(CC) -c $(FLAGS) parser.c
 echo.o:echo.c echo.h
 	$(CC) -c $(FLAGS) echo.c
-cd.o:cd.c cd.h
+cd.o:cd.c
 	$(CC) -c $(FLAGS) cd.c
 external.o:external.c external.h
 	$(CC) -c $(FLAGS) external.c

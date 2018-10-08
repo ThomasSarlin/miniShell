@@ -1,6 +1,5 @@
-
 int runCommand(command[],int);
+void userLoop(char*,command[]);
+void sysprint(void);
 int checkFunction(char*);
-void echo(command);
-void cd(command);
 void external(command[],int);

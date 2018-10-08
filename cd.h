@@ -1,2 +1,2 @@
 #include "parser.h"
-void cd(command);
+void cd(char*);

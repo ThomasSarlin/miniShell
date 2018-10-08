@@ -9,27 +9,30 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "linkedList.h"
-int main(int argc,char **argv){
+
+int main(){
 	command comms[MAXCOMMANDS];
-	int userargc;
 	char *userLine;
-	size_t len=0;
-	int waitsize=0;
-	int status;
-	pid_t pid;
-	fprintf(stderr, "mish%% ");
-	fflush(stderr);
-	while((getline(&userLine,&len,stdin))!=-1){
-		userargc=parse(userLine,comms);
-		runCommand(comms,userargc);
-		fprintf(stderr, "mish%% ");
-		fflush(stderr);
-	}
+
+	userLoop(userLine,comms);
+
 	free(userLine);
 	return 0;
 }
-
+void userLoop(char* userLine, command comms[]){
+	int userargc,status;
+	size_t len;
+	sysprint();
+	while((getline(&userLine,&len,stdin))!=-1){
+		userargc=parse(userLine,comms);
+		runCommand(comms,userargc);
+		sysprint();
+	}
+}
+void sysprint(){
+	fprintf(stderr, "mish%% ");
+	fflush(stderr);
+}
 int runCommand(command comms[],int userargc){
 	int result=-1;
 	switch(checkFunction(*comms[0].argv)){
@@ -37,7 +40,10 @@ int runCommand(command comms[],int userargc){
 			echo(comms[0]);
 			break;
 		case 1:
-			cd(comms[0]);
+			if(comms[0].argc!=0)
+				cd(*(comms[0].argv+1));
+			else
+				cd(getenv("HOME"));
 			break;
 		default:
 			result=0;

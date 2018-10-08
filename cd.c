@@ -1,8 +1,7 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include <unistd.h>
 #include "cd.h"
-#include <dirent.h>
-
-void cd(command com){
-	printf("CD");
+#include "parser.h"
+void cd(char* dir){
+	if(chdir(dir))perror(dir);
 }
