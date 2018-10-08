@@ -22,7 +22,7 @@ int main(int argc,char **argv){
 	fflush(stderr);
 	while((getline(&userLine,&len,stdin))!=-1){
 		userargc=parse(userLine,comms);
-		runCommand(comms);
+		runCommand(comms,userargc);
 		fprintf(stderr, "mish%% ");
 		fflush(stderr);
 	}
@@ -30,7 +30,7 @@ int main(int argc,char **argv){
 	return 0;
 }
 
-int runCommand(command comms[]){
+int runCommand(command comms[],int userargc){
 	int result=-1;
 	switch(checkFunction(*comms[0].argv)){
 		case 0:
@@ -41,7 +41,7 @@ int runCommand(command comms[]){
 			break;
 		default:
 			result=0;
-			external(comms);
+			external(comms,userargc);
 			break;
 	}
 	return result;
