@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -Werror -g
+CFLAGS = -Wall -Werror -g -Wmissing-declarations -Wreturntype -Wparentheses - Wunused -Wold-style-definition -Wundef -Wshadow -Wstrict-prototpes -Wswitch-default -Wunreachable-code
 SOURCES = 
 TARGET = mish
 

@@ -5,12 +5,15 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <signal.h>
+pid_t pid[MAXCOMMANDS];
+int userc;
+	
 void external(command comms[], int userargc){
-	pid_t pid[userargc];
 	int pipes[userargc-1][2];
-
+	int userc=userargc;
 	createPipes(pipes,userargc);
-	run(comms,userargc,pipes,pid);
+	run(comms,userargc,pipes);
 	closePipes(pipes,userargc);
 	awaitResponse(pid,userargc);
 }
@@ -21,7 +24,7 @@ void createPipes(int pipes[][2],int userargc){
 			exit(1);
 		};
 }
-void run(command comms[],int userargc,int pipes[][2],pid_t pid[]){
+void run(command comms[],int userargc,int pipes[][2]){
 	for(int index=0;index<userargc;index++)
 		if((pid[index]=fork())==0){
 				rePipe(comms[index],pipes,userargc,index);
@@ -77,11 +80,11 @@ void awaitResponse(int pid[],int userargc){
 	for(int i=0;i<userargc;i++){
 		pidreturn=wait(&status);
 		if(status==1)
-			terminate(pid,userargc);
+			terminate();
 	}
 }
 
-void terminate(int pid[],int userargc){
-	for(int i=0;i<userargc-1;i++)
+void terminate(void){
+	for(int i=0;i<userc-1;i++)
 		if(kill(pid[i],SIGKILL))perror("kill error");
 }
