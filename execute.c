@@ -3,7 +3,6 @@
 #include <unistd.h>
 int dupPipe(int pip[2],int end, int destfd){
 	int pipe = dup2(pip[end],destfd);
-	close(pip[end]);
 	return pipe;
 }
 
