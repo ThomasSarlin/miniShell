@@ -1,3 +1,9 @@
+/* external.h
+ * Thomas Sarlin
+ * Laboration 3 : Systemnära programmering, HT-18
+ * Responsible for external commands
+ */
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "external.h"
@@ -8,6 +14,12 @@
 #include <signal.h>
 pid_t pid[MAXCOMMANDS];
 int userc;
+
+/** 
+ * Name: external
+ * Purpose: main function for executing user commands
+ * Parameters:  array of usercommands, number of arguments
+ * */
 	
 void external(command comms[], int userargc){
 	int pipes[userargc-1][2];
@@ -15,8 +27,15 @@ void external(command comms[], int userargc){
 	createPipes(pipes,userargc);
 	run(comms,userargc,pipes);
 	closePipes(pipes,userargc);
-	awaitResponse(pid,userargc);
+	awaitResponse(userargc);
 }
+
+/**
+ * Name: createPipes
+ * Purpose: creates Pipes depending on the number of arguments.(n-1)
+ * Parameters: array representing the pipes,number of arguments
+ * */
+
 void createPipes(int pipes[][2],int userargc){
 	for(int i=0;i<userargc-1;i++)
 		if(pipe(pipes[i])){
@@ -24,6 +43,14 @@ void createPipes(int pipes[][2],int userargc){
 			exit(1);
 		};
 }
+
+/**
+ * Name: run 
+ * Purpose: looping trough the user commands and fork
+ * Parameters: array of user commands, number of arguments
+ *              array of pipes.
+ * */
+
 void run(command comms[],int userargc,int pipes[][2]){
 	for(int index=0;index<userargc;index++)
 		if((pid[index]=fork())==0){
@@ -32,6 +59,13 @@ void run(command comms[],int userargc,int pipes[][2]){
 				exec(comms[index]);
 		}
 }
+
+/**
+ * Name: rePipe
+ * Purpose: arranges the pipes for a specific command
+ * Parameters: user command,pipe,number of arguments
+ *             current index in command array.
+ * */
 
 void rePipe(command com,int pipes[][2], int userargc, int index){
 	if(com.infile!=NULL)
@@ -45,6 +79,13 @@ void rePipe(command com,int pipes[][2], int userargc, int index){
 		dupPipe(pipes[index],WRITE_END,WRITE_END);
 }
 
+/**
+ * Name: exec
+ * Purpose: executes command
+ * Parameters: user command
+ * Comment: exit(1) if invalid command.
+ * */
+
 void exec(command com){
 	if(execvp(*com.argv,com.argv)==-1){
 		perror(*com.argv);
@@ -52,12 +93,11 @@ void exec(command com){
 	}
 }
 
-int notFirst(char* infile,int userargc,int index){
-	return (index!=0 && userargc>1 && infile==NULL);
-}
-int notLast(char* outfile,int userargc,int index){
-	return (index!=(userargc-1) && userargc>1 && outfile==NULL);
-}
+/**
+* Name: redirectEnd
+* Purpose: redirecting WRITE_END or READ_END to/from file.
+* Parameters: filename, WRITE_END or READ_END.
+*/
 
 void redirectEnd(char *file, int end){
 	if(redirect(file,end,end)==-1){
@@ -66,6 +106,33 @@ void redirectEnd(char *file, int end){
 	}
 }
 
+/**
+* Name: notFirst
+* Purpose: checking if the command is not the first command.
+* Parameters: infile,user arguments, index
+*/
+
+int notFirst(char* infile,int userargc,int index){
+	return (index!=0 && userargc>1 && infile==NULL);
+}
+
+/**
+* Name: notLast
+* Purpose: checking if the command is not the last command.
+* Parameters: infile,user arguments, index
+*/
+
+int notLast(char* outfile,int userargc,int index){
+	return (index!=(userargc-1) && userargc>1 && outfile==NULL);
+}
+
+/**
+* Name: closePipes
+* Purose: close pipes
+* Parameters: array of pipes, user arguments
+* Comment: will close n-1 user arguments of pipes.
+*/
+
 void closePipes(int pipes[][2], int userargc){
 	for(int i=0;i<userargc-1;i++){
 		if(close(pipes[i][0]))perror("pipe closing error");
@@ -73,8 +140,15 @@ void closePipes(int pipes[][2], int userargc){
 	}
 }
 
+/**
+* Name: awaitResponse
+* Purpose: Await status messages from children.
+* Parameters: number of user arguments.
+* Comment: if status 1 is returned all children will
+*            be terminated.
+*/
 
-void awaitResponse(int pid[],int userargc){
+void awaitResponse(int userargc){
 	pid_t pidreturn;
 	int status;
 	for(int i=0;i<userargc;i++){
@@ -83,7 +157,10 @@ void awaitResponse(int pid[],int userargc){
 			terminate();
 	}
 }
-
+/**
+* Name: terminate
+* Purpose: Kill all children
+*/
 void terminate(void){
 	for(int i=0;i<userc-1;i++)
 		if(kill(pid[i],SIGKILL))perror("kill error");
