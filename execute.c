@@ -17,9 +17,7 @@
  */
 
 int dupPipe(int pip[2],int end, int destfd){
-	int pipe;
-	if(pipe = dup2(pip[end],destfd))
-		perror("pipe error");
+	int pipe = dup2(pip[end],destfd);
 	return pipe;
 }
 

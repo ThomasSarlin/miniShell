@@ -32,14 +32,16 @@ int userLoop(){
 	int result = 0;
 	command comms[MAXCOMMANDS];
 	char *userLine;
-	int userargc,status;
-	size_t len;
+	int userargc;
+	size_t len=0;
 	sysprint();
+	signal(SIGINT,sighandler);
 	while((getline(&userLine,&len,stdin))!=-1){
 		userargc=parse(userLine,comms);
 		if(userargc!=0)
 			runCommand(comms,userargc);
 		sysprint();
+		signal(SIGINT,sighandler);
 	}
 	free(userLine);
 	return result;
@@ -57,6 +59,7 @@ void runCommand(command comms[],int userargc){
 	switch(checkFunction(*comms[0].argv)){
 		case 0:
 			external(comms,userargc);
+			break;
 		case 1:
 			echo(comms[0]);
 			break;
@@ -101,5 +104,8 @@ int checkFunction(char *command){
 	return result;
 
 }
-
+void sighandler(int sig){
+	fprintf(stderr,"\n");
+	sysprint();
+}
 

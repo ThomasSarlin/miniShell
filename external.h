@@ -78,6 +78,7 @@ void awaitResponse(int);
 
 /**
 * Name: terminate
-* Purpose: Kill all children
+* Purpose: send signal to children
+* Parameters: Signal code
 */
-void terminate(void);
+void terminate(int);

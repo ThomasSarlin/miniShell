@@ -23,7 +23,8 @@ int userc;
 	
 void external(command comms[], int userargc){
 	int pipes[userargc-1][2];
-	int userc=userargc;
+	userc=userargc;
+	signal(SIGINT,terminate);
 	createPipes(pipes,userargc);
 	run(comms,userargc,pipes);
 	closePipes(pipes,userargc);
@@ -154,14 +155,15 @@ void awaitResponse(int userargc){
 	for(int i=0;i<userargc;i++){
 		pidreturn=wait(&status);
 		if(status==1)
-			terminate();
+			terminate(SIGKILL);
 	}
 }
 /**
 * Name: terminate
 * Purpose: Kill all children
 */
-void terminate(void){
-	for(int i=0;i<userc-1;i++)
-		if(kill(pid[i],SIGKILL))perror("kill error");
+void terminate(int sig){
+	for(int i=0;i<userc;i++){
+		if(kill(pid[i],sig))perror("kill error");
+	}
 }

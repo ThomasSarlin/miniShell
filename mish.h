@@ -44,4 +44,4 @@ void sysprint(void);
 
 int checkFunction(char*);
 
-
+void sighandler(int);
