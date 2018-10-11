@@ -22,9 +22,6 @@ int main(){
 /**
  * Name: userLoop
  * Purpose: reads input from the user with stdin
- * Parameters:  -Array av typen command struct enligt parser.h 
- * 		med information om de commandon som ska köras
- *		-antalet kommandon som användaren har angivit.
  * Return values: 1 on error, 0 on success.
  * */
 
@@ -47,14 +44,15 @@ int userLoop(){
 	return result;
 }
 
+
 /**
  * Name: runCommand
  * Purpose: executes commandos from the user.
- * Parameters:  -Array av typen command struct enligt parser.h 
- * 		med information om de commandon som ska köras
- *		-antalet kommandon som användaren har angivit.
+ * Parameters:  -Array of commands (check parser.h)
+ *		-number of commands
  * Return values: void
  * */
+
 void runCommand(command comms[],int userargc){
 	switch(checkFunction(*comms[0].argv)){
 		case 0:

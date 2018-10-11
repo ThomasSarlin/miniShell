@@ -21,8 +21,9 @@ external.o:external.c external.h
 execute.o:execute.c execute.h
 	$(CC) -c $(FLAGS) execute.c
 clear:
+	rm *.o
+clearAll:
 	rm *.o mish
-
 valgrind:
 	valgrind ./mish
 

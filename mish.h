@@ -24,6 +24,7 @@ int userLoop();
  *		-antalet kommandon som användaren har angivit.
  * Return values: void
  * */
+
 void runCommand(command[],int);
 /**
  * Name: sysprint
