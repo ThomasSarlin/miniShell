@@ -150,10 +150,9 @@ void closePipes(int pipes[][2], int userargc){
 */
 
 void awaitResponse(int userargc){
-	pid_t pidreturn;
 	int status;
 	for(int i=0;i<userargc;i++){
-		pidreturn=wait(&status);
+		wait(&status);
 		if(status==1)
 			terminate(SIGKILL);
 	}

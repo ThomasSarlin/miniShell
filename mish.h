@@ -13,7 +13,7 @@
  * Return values: 1 on error, 0 on success.
  * */
 
-int userLoop();
+int userLoop(void);
 
 
 /**

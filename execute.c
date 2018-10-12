@@ -7,7 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-
+#include "execute.h"
 /* Duplicate a pipe to a standard I/O file descriptor
  * Arguments:	pip	the pipe
  *		end	tells which end of the pipe shold be dup'ed; it can be

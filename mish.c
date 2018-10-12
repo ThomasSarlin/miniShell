@@ -16,7 +16,7 @@
 #include <sys/types.h>
 #include <sys/wait.h>
 
-int main(){
+int main(int argc, char **argv){
 	return userLoop();
 }
 /**
@@ -25,7 +25,7 @@ int main(){
  * Return values: 1 on error, 0 on success.
  * */
 
-int userLoop(){
+int userLoop(void){
 	int result = 0;
 	command comms[MAXCOMMANDS];
 	char *userLine;
@@ -80,7 +80,7 @@ void runCommand(command comms[],int userargc){
  * Return values: void
  * */
 
-void sysprint(){
+void sysprint(void){
 	fprintf(stderr, "mish%% ");
 	fflush(stderr);
 }
@@ -93,11 +93,11 @@ void sysprint(){
  * Comment: should not be called if there are no arguments.
  * */
 
-int checkFunction(char *command){
+int checkFunction(char *com){
 	int result=0;
-	if(strcmp(command,"echo")==0)
+	if(strcmp(com,"echo")==0)
 		result=1;
-	else if(strcmp(command,"cd")==0)
+	else if(strcmp(com,"cd")==0)
 		result=2;
 	return result;
 
