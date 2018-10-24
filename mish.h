@@ -45,4 +45,11 @@ void sysprint(void);
 
 int checkFunction(char*);
 
+/**
+ * Name: sighandler
+ * Purpose: Ingnoring ctrl+c and instead of closing the program
+ *  the prompt will be reprinted, propsing the user to enter a vaild
+ *  commmand. 
+ * Parameters: signal
+ *  */
 void sighandler(int);

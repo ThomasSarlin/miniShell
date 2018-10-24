@@ -15,7 +15,6 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-
 int main(int argc, char **argv){
 	return userLoop();
 }
@@ -102,6 +101,13 @@ int checkFunction(char *com){
 	return result;
 
 }
+/**
+ * Name: sighandler
+ * Purpose: Ingnoring ctrl+c and instead of closing the program
+ *  the prompt will be reprinted, propsing the user to enter a vaild
+ *  commmand. 
+ * Parameters: signal
+ *  */
 void sighandler(int sig){
 	fprintf(stderr,"\n");
 	sysprint();
